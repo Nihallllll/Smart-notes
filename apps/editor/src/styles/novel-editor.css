@@ -1,0 +1,172 @@
+/* Novel Editor Styles - Inspired by Notion */
+.novel-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  min-height: 100vh;
+}
+
+.novel-editor {
+  outline: none;
+  min-height: 500px;
+  color: #37352f;
+  line-height: 1.6;
+}
+
+.novel-editor h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  color: #1f1f1f;
+}
+
+.novel-editor h2 {
+  font-size: 1.875rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #1f1f1f;
+}
+
+.novel-editor h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: #1f1f1f;
+}
+
+.novel-editor p {
+  margin: 0.5rem 0;
+}
+
+.novel-editor .ProseMirror-placeholder {
+  color: #9ca3af;
+  pointer-events: none;
+  position: absolute;
+  opacity: 0.6;
+}
+
+.novel-editor .ProseMirror-placeholder:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.novel-editor ul,
+.novel-editor ol {
+  padding-left: 1.5rem;
+  margin: 1rem 0;
+}
+
+.novel-editor li {
+  margin: 0.25rem 0;
+}
+
+.novel-editor code {
+  background-color: #f3f4f6;
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.25rem;
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 0.875em;
+  color: #e74c3c;
+}
+
+.novel-editor pre {
+  background-color: #1f2937;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+  color: #f9fafb;
+  font-family: 'Monaco', 'Courier New', monospace;
+  margin: 1rem 0;
+}
+
+.novel-editor pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+}
+
+/* Bubble Menu */
+.bubble-menu {
+  display: flex;
+  background-color: #1f2937;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  gap: 0.125rem;
+}
+
+.bubble-menu button {
+  background: none;
+  border: none;
+  color: #f9fafb;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.bubble-menu button:hover {
+  background-color: #374151;
+}
+
+.bubble-menu button.is-active {
+  background-color: #4b5563;
+  color: #60a5fa;
+}
+
+.bubble-menu .separator {
+  width: 1px;
+  background-color: #4b5563;
+  margin: 0.25rem 0.125rem;
+}
+
+/* Task Lists */
+.novel-editor .task-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.novel-editor .task-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.novel-editor .task-item input[type="checkbox"] {
+  margin-top: 0.25rem;
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+}
+
+/* Tables */
+.novel-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.novel-table td,
+.novel-table th {
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.novel-table th {
+  background-color: #f9fafb;
+  font-weight: 600;
+}
+
+.novel-table .selectedCell {
+  background-color: #dbeafe;
+}
