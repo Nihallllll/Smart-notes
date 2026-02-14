@@ -3,9 +3,33 @@ import StarterKit from '@tiptap/starter-kit'
 import Placeholder from '@tiptap/extension-placeholder'
 import Underline from '@tiptap/extension-underline'
 import Link from '@tiptap/extension-link'
+import { Moon, Sun } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import '../styles/minimal-editor.css'
 
+/**
+ * MinimalEditor - A clean and distraction-free writing experience
+ * 
+ * Perfect for focused writing with minimal formatting options.
+ * Features:
+ * - Clean interface
+ * - Dark mode support
+ * - Essential formatting only
+ */
 const MinimalEditor = () => {
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  useEffect(() => {
+    const initialDarkMode = document.documentElement.classList.contains('dark')
+    setIsDarkMode(initialDarkMode)
+  }, [])
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', isDarkMode)
+  }, [isDarkMode])
+
+  const toggleDarkMode = () => setIsDarkMode(!isDarkMode)
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -21,24 +45,7 @@ const MinimalEditor = () => {
         openOnClick: false
       }),
     ],
-    content: `
-      <h1>Minimal Editor</h1>
-      <p>A clean, distraction-free writing experience.</p>
-      <p>This editor focuses on <strong>simplicity</strong> and <em>clarity</em>. No complex menus, just pure writing.</p>
-      <h2>What you can do:</h2>
-      <ul>
-        <li>Use basic formatting (bold, italic, underline)</li>
-        <li>Create headings and lists</li>
-        <li>Write code blocks</li>
-        <li>Add links</li>
-      </ul>
-      <p>Try using keyboard shortcuts:</p>
-      <ul>
-        <li><code>Ctrl/Cmd + B</code> for bold</li>
-        <li><code>Ctrl/Cmd + I</code> for italic</li>
-        <li><code>Ctrl/Cmd + U</code> for underline</li>
-      </ul>
-    `,
+    content: '<p>Start writing...</p>',
     editorProps: {
       attributes: {
         class: 'minimal-editor prose prose-sm sm:prose lg:prose-lg focus:outline-none max-w-full'
@@ -48,6 +55,15 @@ const MinimalEditor = () => {
 
   return (
     <div className="minimal-container">
+      <div className="editor-toolbar-minimal">
+        <button
+          onClick={toggleDarkMode}
+          className="theme-toggle-btn-minimal"
+          title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+        >
+          {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+        </button>
+      </div>
       <EditorContent editor={editor} />
     </div>
   )

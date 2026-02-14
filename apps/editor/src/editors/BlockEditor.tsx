@@ -13,12 +13,26 @@ import { TableCell } from '@tiptap/extension-table-cell'
 import { TableHeader } from '@tiptap/extension-table-header'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import { common, createLowlight } from 'lowlight'
-import { Plus, Heading1, Heading2, List, ListOrdered, CheckSquare, Code, ImageIcon, Table as TableIcon } from 'lucide-react'
+import { Plus, Heading1, Heading2, List, ListOrdered, CheckSquare, Code, ImageIcon, Table as TableIcon, Moon, Sun } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import '../styles/block-editor.css'
 
 const lowlight = createLowlight(common)
 
 const BlockEditor = () => {
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  useEffect(() => {
+    const initialDarkMode = document.documentElement.classList.contains('dark')
+    setIsDarkMode(initialDarkMode)
+  }, [])
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', isDarkMode)
+  }, [isDarkMode])
+
+  const toggleDarkMode = () => setIsDarkMode(!isDarkMode)
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -58,24 +72,7 @@ const BlockEditor = () => {
       TableCell,
       TableHeader,
     ],
-    content: `
-      <h1>Block-Based Editor</h1>
-      <p>Inspired by <strong>BlockNote</strong> and modern block editors.</p>
-      <h2>Block-Style Editing:</h2>
-      <p>Each paragraph, heading, or element is a "block" that you can manipulate.</p>
-      <ul>
-        <li>Click the <strong>+</strong> button to add new blocks</li>
-        <li>Easily reorganize content</li>
-        <li>Rich formatting options</li>
-      </ul>
-      <h3>Features:</h3>
-      <ul>
-        <li>✨ Floating menu for quick actions</li>
-        <li>📝 Multiple block types</li>
-        <li>🎨 Syntax highlighting for code</li>
-        <li>📊 Tables and task lists</li>
-      </ul>
-    `,
+    content: '<p>Start writing...</p>',
     editorProps: {
       attributes: {
         class: 'block-editor prose prose-sm sm:prose lg:prose-lg focus:outline-none max-w-full'
@@ -117,6 +114,15 @@ const BlockEditor = () => {
 
   return (
     <div className="block-container">
+      <div className="editor-toolbar">
+        <button
+          onClick={toggleDarkMode}
+          className="theme-toggle-btn"
+          title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+        >
+          {isDarkMode ? <Moon size={20} /> : <Sun size={20} />}
+        </button>
+      </div>
       {editor && (
         <FloatingMenu editor={editor}>
           <div className="floating-menu">

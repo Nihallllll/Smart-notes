@@ -1,0 +1,90 @@
+/* BlockNote Editor Styles */
+
+.blocknote-container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--bg-primary, #ffffff);
+  color: var(--text-primary, #1f2937);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+:root.dark .blocknote-container {
+  --bg-primary: #1a1a1a;
+  --text-primary: #e5e7eb;
+}
+
+.editor-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 12px 24px;
+  background-color: var(--bg-primary, #ffffff);
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+:root.dark .editor-toolbar {
+  background-color: var(--bg-primary, #1a1a1a);
+  border-bottom-color: #374151;
+}
+
+.theme-toggle-btn {
+  padding: 8px 12px;
+  background-color: transparent;
+  border: 1px solid var(--border-color, #d1d5db);
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-primary, #374151);
+  transition: all 0.2s;
+}
+
+.theme-toggle-btn:hover {
+  background-color: var(--hover-bg, #f3f4f6);
+  border-color: var(--border-hover, #9ca3af);
+}
+
+:root.dark .theme-toggle-btn {
+  border-color: #4b5563;
+  color: #e5e7eb;
+}
+
+:root.dark .theme-toggle-btn:hover {
+  background-color: #374151;
+  border-color: #6b7280;
+}
+
+.blocknote-editor-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+
+/* Override BlockNote default styles for better theming */
+:root.dark .bn-container {
+  background-color: #1a1a1a;
+  color: #e5e7eb;
+}
+
+:root.dark .bn-editor {
+  background-color: #1a1a1a;
+}
+
+:root.dark .bn-block-content {
+  color: #e5e7eb;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .editor-toolbar {
+    padding: 8px 16px;
+  }
+
+  .blocknote-editor-wrapper {
+    padding: 40px 16px;
+  }
+}

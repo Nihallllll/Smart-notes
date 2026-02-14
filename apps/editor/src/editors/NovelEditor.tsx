@@ -12,10 +12,39 @@ import { Table } from '@tiptap/extension-table'
 import { TableRow } from '@tiptap/extension-table-row'
 import { TableCell } from '@tiptap/extension-table-cell'
 import { TableHeader } from '@tiptap/extension-table-header'
-import { Bold, Italic, Strikethrough, Code, Link as LinkIcon, Heading1, Heading2, List, ListOrdered, CheckSquare } from 'lucide-react'
+import TextAlign from '@tiptap/extension-text-align'
+import { Color } from '@tiptap/extension-color'
+import { TextStyle } from '@tiptap/extension-text-style'
+import { Bold, Italic, Strikethrough, Code, Link as LinkIcon, Heading1, Heading2, List, ListOrdered, CheckSquare, Highlighter, AlignLeft, AlignCenter, AlignRight, Moon, Sun } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import '../styles/novel-editor.css'
 
+/**
+ * NovelEditor - The "AI-First" Notion Editor
+ * 
+ * Highly polished Tiptap configuration inspired by Novel by Steven Tey
+ * Features:
+ * - Beautiful Bubble Menu for formatting
+ * - Slash Menu for commands
+ * - Tailwind CSS styling
+ * - AI completion interface ready (requires API key)
+ * 
+ * Repo: https://github.com/steven-tey/novel
+ */
 const NovelEditor = () => {
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  useEffect(() => {
+    const initialDarkMode = document.documentElement.classList.contains('dark')
+    setIsDarkMode(initialDarkMode)
+  }, [])
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', isDarkMode)
+  }, [isDarkMode])
+
+  const toggleDarkMode = () => setIsDarkMode(!isDarkMode)
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -34,12 +63,12 @@ const NovelEditor = () => {
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
-          class: 'text-blue-500 underline cursor-pointer'
+          class: 'novel-link'
         }
       }),
       Image.configure({
         HTMLAttributes: {
-          class: 'rounded-lg max-w-full h-auto'
+          class: 'novel-image'
         }
       }),
       Underline,
@@ -66,19 +95,23 @@ const NovelEditor = () => {
       TableRow,
       TableCell,
       TableHeader,
+      TextAlign.configure({
+        types: ['heading', 'paragraph']
+      }),
+      TextStyle,
+      Color,
     ],
     content: `
-      <h1>Novel-Style Editor</h1>
-      <p>This is a <strong>Notion-style</strong> WYSIWYG editor inspired by the open-source <em>Novel</em> project.</p>
-      <h2>Features:</h2>
+      <h1>Welcome to Novel Editor</h1>
+      <p>A beautiful, AI-ready editor inspired by Notion.</p>
+      <p><strong>Try these features:</strong></p>
       <ul>
-        <li>Rich formatting with bubble menu</li>
-        <li>Task lists and tables</li>
-        <li>Image support</li>
-        <li>Link editing</li>
+        <li>Select text to see the bubble menu with formatting options</li>
+        <li>Type <code>/</code> to open the slash command menu</li>
+        <li>Create tables, images, and task lists</li>
+        <li>Use <em>markdown shortcuts</em> like <code>**bold**</code> or <code>## heading</code></li>
       </ul>
-      <h3>Try it out:</h3>
-      <p>Click on any text to see the formatting menu appear!</p>
+      <p>Start writing to experience the clean, focused interface!</p>
     `,
     editorProps: {
       attributes: {
@@ -94,10 +127,23 @@ const NovelEditor = () => {
     }
   }
 
+  const setColor = (color: string) => {
+    editor?.chain().focus().setColor(color).run()
+  }
+
   return (
     <div className="novel-container">
+      <div className="editor-toolbar">
+        <button
+          onClick={toggleDarkMode}
+          className="theme-toggle-btn"
+          title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+        >
+          {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+        </button>
+      </div>
       {editor && (
-        <BubbleMenu editor={editor}>
+        <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
           <div className="bubble-menu">
             <button
               onClick={() => editor.chain().focus().toggleBold().run()}
@@ -166,11 +212,40 @@ const NovelEditor = () => {
             </button>
             <div className="separator" />
             <button
+              onClick={() => editor.chain().focus().toggleHighlight().run()}
+              className={editor.isActive('highlight') ? 'is-active' : ''}
+              title="Highlight"
+            >
+              <Highlighter size={16} />
+            </button>
+            <button
               onClick={setLink}
               className={editor.isActive('link') ? 'is-active' : ''}
               title="Add Link"
             >
               <LinkIcon size={16} />
+            </button>
+            <div className="separator" />
+            <button
+              onClick={() => editor.chain().focus().setTextAlign('left').run()}
+              className={editor.isActive({ textAlign: 'left' }) ? 'is-active' : ''}
+              title="Align Left"
+            >
+              <AlignLeft size={16} />
+            </button>
+            <button
+              onClick={() => editor.chain().focus().setTextAlign('center').run()}
+              className={editor.isActive({ textAlign: 'center' }) ? 'is-active' : ''}
+              title="Align Center"
+            >
+              <AlignCenter size={16} />
+            </button>
+            <button
+              onClick={() => editor.chain().focus().setTextAlign('right').run()}
+              className={editor.isActive({ textAlign: 'right' }) ? 'is-active' : ''}
+              title="Align Right"
+            >
+              <AlignRight size={16} />
             </button>
           </div>
         </BubbleMenu>

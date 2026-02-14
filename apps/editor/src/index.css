@@ -1,8 +1,11 @@
+@import '../@/styles/_variables.scss';
+@import '../@/styles/_keyframe-animations.scss';
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color-scheme: light;
+  color-scheme: light dark;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -24,6 +27,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #fafafa;
   min-height: 100vh;
+  transition: background-color 0.3s ease;
+}
+
+.dark body {
+  background-color: #121212;
 }
 
 #root {
@@ -44,6 +52,10 @@ body {
 /* Selection */
 .ProseMirror ::selection {
   background-color: #b3d4fc;
+}
+
+.dark .ProseMirror ::selection {
+  background-color: rgba(157, 138, 255, 0.3);
 }
 
 .ProseMirror ::-moz-selection {

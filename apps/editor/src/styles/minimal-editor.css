@@ -1,11 +1,53 @@
 /* Minimal Editor Styles - Clean and Simple */
 .minimal-container {
+  position: relative;
   max-width: 720px;
   margin: 0 auto;
   padding: 80px 40px;
   font-family: 'Georgia', 'Times New Roman', serif;
   min-height: 100vh;
   background-color: #fafafa;
+  transition: background-color 0.3s ease;
+}
+
+.dark .minimal-container {
+  background-color: #121212;
+}
+
+/* Dark mode toggle for minimal editor */
+.editor-toolbar-minimal {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+}
+
+.theme-toggle-btn-minimal {
+  padding: 8px 12px;
+  background-color: transparent;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #374151;
+  transition: all 0.2s;
+}
+
+.theme-toggle-btn-minimal:hover {
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.dark .theme-toggle-btn-minimal {
+  border-color: #4b5563;
+  color: #e5e7eb;
+}
+
+.dark .theme-toggle-btn-minimal:hover {
+  background-color: #374151;
+  border-color: #6b7280;
 }
 
 .minimal-editor {
@@ -14,6 +56,10 @@
   color: #1a1a1a;
   line-height: 1.8;
   font-size: 1.1rem;
+}
+
+.dark .minimal-editor {
+  color: #e0e0e0;
 }
 
 .minimal-editor h1 {
@@ -25,6 +71,10 @@
   letter-spacing: -0.02em;
 }
 
+.dark .minimal-editor h1 {
+  color: #f5f5f5;
+}
+
 .minimal-editor h2 {
   font-size: 2rem;
   font-weight: 600;
@@ -33,12 +83,20 @@
   color: #1a1a1a;
 }
 
+.dark .minimal-editor h2 {
+  color: #e0e0e0;
+}
+
 .minimal-editor h3 {
   font-size: 1.5rem;
   font-weight: 600;
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
   color: #1a1a1a;
+}
+
+.dark .minimal-editor h3 {
+  color: #e0e0e0;
 }
 
 .minimal-editor p {
