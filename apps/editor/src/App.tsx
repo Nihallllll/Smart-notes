@@ -10,11 +10,11 @@ function App() {
   return (
     <div className="app-container">
       {/* Choose one of the editors below */}
-      <BlockNoteEditor />
+      {/* <BlockNoteEditor /> */}
       {/* <NovelEditor /> */}
       {/* <BlockEditor /> */}
       {/* <MinimalEditor /> */}
-      {/* <SimpleEditor /> */}
+      <SimpleEditor />
     </div>
   )
 }

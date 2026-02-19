@@ -1,0 +1,116 @@
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  height: 60px;
+}
+
+.dark .topbar {
+  background-color: #1a1a1a;
+  border-bottom-color: #374151;
+}
+
+.topbar-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.note-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.dark .note-title {
+  color: #f9fafb;
+}
+
+.save-status {
+  font-size: 12px;
+  color: #6b7280;
+  min-height: 16px;
+}
+
+.dark .save-status {
+  color: #9ca3af;
+}
+
+.status-saving {
+  color: #3b82f6;
+}
+
+.dark .status-saving {
+  color: #60a5fa;
+}
+
+.status-saved {
+  color: #10b981;
+}
+
+.dark .status-saved {
+  color: #34d399;
+}
+
+.topbar-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-action {
+  padding: 8px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dark .btn-action {
+  background-color: #1f2937;
+  border-color: #374151;
+  color: #d1d5db;
+}
+
+.btn-action:hover {
+  background-color: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.dark .btn-action:hover {
+  background-color: #374151;
+  border-color: #4b5563;
+}
+
+.btn-save:hover {
+  background-color: #dbeafe;
+  border-color: #3b82f6;
+  color: #1e40af;
+}
+
+.dark .btn-save:hover {
+  background-color: #1e3a8a;
+  border-color: #2563eb;
+  color: #93c5fd;
+}
+
+.btn-delete:hover {
+  background-color: #fee2e2;
+  border-color: #ef4444;
+  color: #991b1b;
+}
+
+.dark .btn-delete:hover {
+  background-color: #7f1d1d;
+  border-color: #dc2626;
+  color: #fca5a5;
+}
