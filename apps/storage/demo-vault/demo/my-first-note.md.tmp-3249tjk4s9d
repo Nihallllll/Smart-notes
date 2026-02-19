@@ -1,0 +1,13 @@
+---
+title: My First Note
+created_at: 1771521375092
+---
+This is my first note using the storage layer!
+
+## Features
+- DB-First architecture
+- Conflict detection
+- File watching
+
+
+✅ This line was added!
