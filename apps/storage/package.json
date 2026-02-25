@@ -3,6 +3,10 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
+  "scripts": {
+    "test": "bun run demo.ts",
+    "typecheck": "tsc --noEmit"
+  },
   "dependencies": {
     "chokidar": "^5.0.0",
     "eventemitter3": "^5.0.4",

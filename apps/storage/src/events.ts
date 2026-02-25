@@ -6,7 +6,11 @@ export const EVENTS = {
   NOTE_UPDATED: "noteUpdated",
   NOTE_DELETED: "noteDeleted",
   NOTE_RENAMED: "noteRenamed",
+  NOTE_MOVED: "noteMoved",
   CONFLICT_DETECTED: "conflictDetected",
+  FOLDER_CREATED: "folderCreated",
+  FOLDER_RENAMED: "folderRenamed",
+  FOLDER_DELETED: "folderDeleted",
   FOLDER_MOVED: "folderMoved",
 } as const
 
