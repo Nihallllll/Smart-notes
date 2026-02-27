@@ -197,13 +197,3 @@ export interface ImportReport {
   duration: number
 }
 
-/**
- * Import report
- */
-export interface ImportReport {
-  totalFiles: number
-  imported: number
-  skipped: number
-  errors: string[]
-  duration: number
-}

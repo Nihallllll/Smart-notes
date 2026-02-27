@@ -143,7 +143,7 @@ const NovelEditor = () => {
         </button>
       </div>
       {editor && (
-        <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
+        <BubbleMenu editor={editor} tippyOptions ={ {duration: 100} }>
           <div className="bubble-menu">
             <button
               onClick={() => editor.chain().focus().toggleBold().run()}

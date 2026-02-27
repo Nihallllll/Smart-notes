@@ -14,7 +14,7 @@ function App() {
       {/* <NovelEditor /> */}
       {/* <BlockEditor /> */}
       {/* <MinimalEditor /> */}
-      <SimpleEditor />
+      {/* <SimpleEditor /> */}
     </div>
   )
 }

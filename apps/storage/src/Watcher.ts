@@ -97,7 +97,7 @@ export default class Watcher {
     setTimeout(() => {
       this.recentWrites.delete(relativePath)
     }, this.suppressionWindow)
-  }
+  } 
 
   /**
    * Check if a path was recently written internally
