@@ -28,6 +28,7 @@ import type {
   FolderCreatedPayload,
   FolderRenamedPayload,
   FolderDeletedPayload,
+  FolderMovedPayload,
 } from "./types"
 
 /**
@@ -862,11 +863,39 @@ export default class VaultManager extends EventEmitter {
     return updated
   }
 
-  /**
-   * Delete a folder.
-   * - Default (force=false): throws if folder contains notes.
-   * - force=true: trashes all notes in the folder recursively, then removes it.
-   */
+  async moveFolder(folderId: FolderID, newParentPath: string): Promise<Folder> {
+    if (!this.vaultPath || !this.db) throw new Error("Vault not initialized")
+
+    const sanitized = newParentPath.replace(/\.\./g, "").replace(/^\//, "")
+    const folder = this.db.getFolderById(folderId)
+    if (!folder) throw new Error(`Folder not found: ${folderId}`)
+
+    const newPath = sanitized ? `${sanitized}/${folder.name}` : folder.name
+    if (newPath === folder.path) return folder
+
+    if (this.db.getFolderByPath(newPath)) {
+      throw new Error(`A folder already exists at: ${newPath}`)
+    }
+
+    const oldAbsPath = path.join(this.vaultPath, folder.path)
+    const newAbsPath = path.join(this.vaultPath, newPath)
+    await ensureDir(path.dirname(newAbsPath))
+    await fs.rename(oldAbsPath, newAbsPath)
+
+    const affectedNotes = this.db.renameFolderPath(folder.path, newPath)
+    this.db.updateFolder(folderId, { parent_path: sanitized })
+
+    const updated = this.db.getFolderById(folderId)!
+
+    this.emit(EVENTS.FOLDER_MOVED, {
+      oldPath: folder.path,
+      newPath,
+      affectedNotes,
+    } as FolderMovedPayload)
+
+    return updated
+  }
+
   async deleteFolder(folderId: FolderID, force: boolean = false): Promise<void> {
     if (!this.vaultPath || !this.db) throw new Error("Vault not initialized")
 

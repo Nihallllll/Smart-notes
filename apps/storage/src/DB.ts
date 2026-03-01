@@ -1,5 +1,5 @@
 ﻿import path from "path"
-import { Database } from "bun:sqlite"
+import Database from "better-sqlite3"
 import { ensureDir } from "./fsutils"
 import type { NoteMeta, NoteID, Folder, FolderID, EmbeddingStatus, ListNotesOptions } from "./types"
 
@@ -8,7 +8,7 @@ const STORAGE_VERSION = "2.1.0"
 
 export default class DB {
   dbPath: string
-  db: Database
+  db: InstanceType<typeof Database>
 
   constructor(vaultPath: string) {
     const grimoireDir = path.join(vaultPath, ".grimoire")
@@ -17,8 +17,8 @@ export default class DB {
     ensureDir(grimoireDir)
 
     this.db = new Database(this.dbPath)
-    this.db.run("PRAGMA journal_mode = WAL;")  // Better concurrent read performance
-    this.db.run("PRAGMA foreign_keys = ON;")
+    this.db.exec("PRAGMA journal_mode = WAL;")
+    this.db.exec("PRAGMA foreign_keys = ON;")
     this.initializeSchema()
     this.runMigrations()
   }
@@ -26,8 +26,7 @@ export default class DB {
   // ==================== SCHEMA ====================
 
   initializeSchema() {
-    // Notes table
-    this.db.run(`
+    this.db.exec(`
       CREATE TABLE IF NOT EXISTS notes (
         note_id TEXT PRIMARY KEY,
         path TEXT UNIQUE NOT NULL,
@@ -44,8 +43,7 @@ export default class DB {
       );
     `)
 
-    // Tags table (many-to-many: one note can have many tags)
-    this.db.run(`
+    this.db.exec(`
       CREATE TABLE IF NOT EXISTS note_tags (
         note_id TEXT NOT NULL,
         tag TEXT NOT NULL,
@@ -54,8 +52,7 @@ export default class DB {
       );
     `)
 
-    // Folders table (DB-tracked with metadata)
-    this.db.run(`
+    this.db.exec(`
       CREATE TABLE IF NOT EXISTS folders (
         folder_id TEXT PRIMARY KEY,
         path TEXT UNIQUE NOT NULL,
@@ -68,20 +65,18 @@ export default class DB {
       );
     `)
 
-    // Config table
-    this.db.run(`
+    this.db.exec(`
       CREATE TABLE IF NOT EXISTS config (
         key TEXT PRIMARY KEY,
         value TEXT
       );
     `)
 
-    // Indexes for performance
-    this.db.run(`CREATE INDEX IF NOT EXISTS idx_notes_folder ON notes(folder_path);`)
-    this.db.run(`CREATE INDEX IF NOT EXISTS idx_notes_updated ON notes(updated_at);`)
-    this.db.run(`CREATE INDEX IF NOT EXISTS idx_notes_embedding ON notes(embedding_status);`)
-    this.db.run(`CREATE INDEX IF NOT EXISTS idx_tags_tag ON note_tags(tag);`)
-    this.db.run(`CREATE INDEX IF NOT EXISTS idx_folders_parent ON folders(parent_path);`)
+    this.db.exec(`CREATE INDEX IF NOT EXISTS idx_notes_folder ON notes(folder_path);`)
+    this.db.exec(`CREATE INDEX IF NOT EXISTS idx_notes_updated ON notes(updated_at);`)
+    this.db.exec(`CREATE INDEX IF NOT EXISTS idx_notes_embedding ON notes(embedding_status);`)
+    this.db.exec(`CREATE INDEX IF NOT EXISTS idx_tags_tag ON note_tags(tag);`)
+    this.db.exec(`CREATE INDEX IF NOT EXISTS idx_folders_parent ON folders(parent_path);`)
   }
 
   // ==================== MIGRATIONS ====================
@@ -98,10 +93,10 @@ export default class DB {
 
     if (currentVersion === "1.0.0" || currentVersion === "2.0.0") {
       console.log(`[DB] Migrating from ${currentVersion} to 2.1.0`)
-      try { this.db.run(`ALTER TABLE notes ADD COLUMN embedding_status TEXT DEFAULT 'pending';`) } catch (_) {}
-      try { this.db.run(`ALTER TABLE notes ADD COLUMN last_embedded_at INTEGER DEFAULT NULL;`) } catch (_) {}
-      try { this.db.run(`ALTER TABLE notes ADD COLUMN original_path TEXT DEFAULT NULL;`) } catch (_) {}
-      this.db.run(`UPDATE notes SET embedding_status = 'pending' WHERE embedding_status IS NULL;`)
+      try { this.db.exec(`ALTER TABLE notes ADD COLUMN embedding_status TEXT DEFAULT 'pending';`) } catch (_) {}
+      try { this.db.exec(`ALTER TABLE notes ADD COLUMN last_embedded_at INTEGER DEFAULT NULL;`) } catch (_) {}
+      try { this.db.exec(`ALTER TABLE notes ADD COLUMN original_path TEXT DEFAULT NULL;`) } catch (_) {}
+      this.db.prepare(`UPDATE notes SET embedding_status = 'pending' WHERE embedding_status IS NULL`).run()
       this.setConfig("storage_version", STORAGE_VERSION)
       console.log(`[DB] Migration to 2.1.0 complete`)
     }
